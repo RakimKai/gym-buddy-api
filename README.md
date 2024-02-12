@@ -1,6 +1,23 @@
-## Gym Management System API
+# Gym-Buddy API
 
-This API provides essential functionalities such as user registration, login, and logout. Please note that this API is a work in progress as I only began to dive into the Laravel backend development.
-More features will be added in future updates.
+This is a RESTful API project for my Gym-Buddy web app created for managing gym-related operations.
+The project is a work in progress, and additional functionalities such as role-based authorization and managing of member subscriptions are planned to be added in the future.
 
+## Features
+
+- **User Authentication**:
+  - Register: Users can create new accounts by providing their details.
+  - Login: Registered users can log in to access protected resources.
+  - Logout: Logged-in users can log out securely.
+
+- **Post Management**:
+  - Create: Authenticated users can create new gym-related posts.
+  - Read: Users can view existing posts.
+  - Update: Post creators can update their own posts.
+  - Delete: Post creators can delete their own posts.
+
+## Technologies Used
+
+- Laravel: A PHP framework used for developing the API backend.
+- SQLITE: Database management system used for storing user information and posts.
 
