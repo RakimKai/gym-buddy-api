@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
-class EditUserRequest extends FormRequest
+class CreateMembershipRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +22,7 @@ class EditUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image'=>['required']
+            'amount'=>['required'],
         ];
     }
-
 }

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Counter extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id','title','content'
+        'member_id','value'
     ];
-    public function user(){
-        return $this->belongsTo(User::class);        
+    public function member(){
+        return $this->belongsTo(User::class,'member_id');        
     }
 }

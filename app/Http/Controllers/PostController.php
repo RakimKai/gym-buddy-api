@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Resources\PostsResource;
 use App\Models\Post;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use function Laravel\Prompts\table;
 
 class PostController extends Controller
 {
 
-     public function store(CreatePostRequest $request) {
+    use HttpResponses;
+
+    public function store(CreatePostRequest $request) {
         $request->validated($request->all());
         $post = Post::create([
             'user_id'=>Auth::user()->id,
@@ -21,22 +23,29 @@ class PostController extends Controller
             'content'=>$request->content
         ]);
 
-        return new PostsResource($post);
+        return $this->success(['post'=>new PostsResource($post)],'Post successfully created',200);
     }
     public function show(Post $post)
     {
-        return new PostsResource($post);
+        return $this->success(['post'=>new PostsResource($post)],'Post successfully fetched',200);
+    }
+
+    public function getAll()
+    {
+        $posts = Post::all();
+        $postsResource = PostsResource::collection($posts);
+        return $this->success(['posts'=>($postsResource)],'Posts successfully fetched',200);
     }
 
     public function update(Request $request, Post $post)
     {
         $post->update($request->all());
-        return new PostsResource($post);
+        return $this->success(['post'=>new PostsResource($post)],'Post successfully modified',200);
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
-        return response(null,204);
+        return $this->success(null,'Post successfully deleted',200);
     }
 }

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\Input;
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -20,11 +21,25 @@ class UserController extends Controller
     {
     }
     public function get(){
-        return User::where('id',Auth::id())->first();
+        return $this->success(['user'=>Auth::user()],'User successfully fetched',200);
     }
     public function update(EditUserRequest $request){
         $userInDb = User::where('id',Auth::id())->first();
-        $userInDb->update($request->all());
+        if($request->new_password){
+            if (!Hash::check($request->current_password, $userInDb->password)){
+                return $this->error(null,'Current password is invalid',400);
+            }
+            $userInDb->password = Hash::make($request->new_password);
+        }
+
+       if($request->image){
+        $fileName = $request->file('image')->getClientOriginalName();
+        $path = url('/storage/images/' . $fileName);
+        $request->file('image')->storeAs('images',$fileName,'public'); 
+        $userInDb->image = $path;
+        }
+
+        $userInDb->update($request->except(['image']));
         return $this->success(['user'=>$userInDb],'User successfully modified',200);
     }
 
